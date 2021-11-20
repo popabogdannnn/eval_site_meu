@@ -1,0 +1,9 @@
+{
+    "problem_id": "id",
+    "stdio": false, 
+    "io_filename": "data",
+    "test_count": 10,
+    "memory": 5000,
+    "stack_memory": 5000,
+    "execution_time": 500
+}
