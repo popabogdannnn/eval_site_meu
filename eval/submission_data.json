@@ -5,5 +5,6 @@
     "test_count": 10,
     "memory": 5000,
     "stack_memory": 5000,
-    "execution_time": 500
+    "execution_time": 500,
+    "compiler_type": "c++64"
 }
