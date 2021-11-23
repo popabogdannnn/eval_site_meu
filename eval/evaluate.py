@@ -27,7 +27,7 @@ execution_time = submission_data["execution_time"]
 
 compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"], submission_data["execution_time"], submission_data["memory"], submission_data["stack_memory"])
 
-#print(compilation_result)
+print(compilation_result)
 
 test_lines = read_file("tests/tests.txt").split("\n")
 
@@ -41,10 +41,10 @@ for line in test_lines:
     in_file = io_filename + ".in"
     out_file = io_filename + ".out"
     
-    os.system("rm -rf execution_jail/*")
-    os.system("cp tests/" + in_file_tests + " execution_jail/" + in_file)
-    os.system("echo -n > execution_jail/" + out_file)
-    os.system("cp " + executable_file_name + " execution_jail/")
+    os.system("rm -rf " + EXECUTION_JAIL +"/*")
+    os.system("cp tests/" + in_file_tests + " " + EXECUTION_JAIL + "/" + in_file)
+    os.system("echo -n > " + EXECUTION_JAIL + "/" + out_file)
+    os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
 
     run_snadbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file)
 

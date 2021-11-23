@@ -9,7 +9,7 @@ compiler_commands = {
     "c32": "",
     "c64": "",
     "c++32": "",
-    "c++64": "usr/bin/g++ -- -m64 -Wall -O2 -static -std=c++14 main.cpp -o main -lm"
+    "c++64": "usr/bin/g++ -- -m64 -Wall -static -O2 -std=c++14 main.cpp -o main -lm"
 }
 
 compiler_dependencies = {
@@ -28,10 +28,12 @@ def compile(code_file_name, executable_file_name,compiler_type, execution_time, 
     compile_command = compiler_commands[compiler_type]
     compiler_depency = compiler_dependencies[compiler_type]
 
-    #os.system("rmdir /sys/fs/cgroup/cpuacct/ia-sandbox/default")
-    os.system("rm -rf compilation_jail/*")
-    os.system("cp " + code_file_name + " compilation_jail/")
-    sandbox_command = "ia-sandbox -r /media/bogdan/0C4E0E4A4E0E2CD0/work/Linux/cpp/eval_site_meu/eval/compilation_jail --forward-env"
+    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default/isolated")
+    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default")
+   
+    os.system("rm -rf " + COMPILATION_JAIL + "/*")
+    os.system("cp " + code_file_name + " "+ COMPILATION_JAIL + "/")
+    sandbox_command = "ia-sandbox -r " + PWD + "/" + COMPILATION_JAIL + "/ --forward-env"
 
     for mount in compiler_depency:
         sandbox_command += " --mount " + mount
@@ -56,9 +58,10 @@ def compile(code_file_name, executable_file_name,compiler_type, execution_time, 
 
     os.system("rm compilation_data.json")
     os.system("rm compile_warnings")
-
+    #print(sandbox_command)
     if "Success" in compilation_data["result"].keys():
-        os.system("mv compilation_jail/" + executable_file_name + " ./")
+        os.system("mv " + COMPILATION_JAIL + "/" + executable_file_name + " ./")
+        #print("mv " + COMPILATION_JAIL + "/" + executable_file_name + " ./")
         ret["result"] = "success"
     return ret
     
