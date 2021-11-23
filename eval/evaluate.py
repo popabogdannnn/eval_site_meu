@@ -20,6 +20,7 @@ if not submission_data["compiler_type"] in code_file_names.keys():
     exit()
 
 code_file_name = code_file_names[submission_data["compiler_type"]]
+submission_id = submission_data["submission_id"]
 stdio = submission_data["stdio"]
 io_filename = submission_data["io_filename"]
 memory = submission_data["memory"]
@@ -32,6 +33,7 @@ compilation_result = compile(code_file_name, executable_file_name, submission_da
 #print(compilation_result)
 
 eval_json = {
+    "submission_id" : submission_id,
     "compilation": {
     }
 }
@@ -96,4 +98,7 @@ if compilation_result["result"] == "success":
     os.system("rm " + executable_file_name)
 if checker:
     os.system("rm checker")
+os.system("rm -rf user_checker/*")
+os.system("rm -rf tests/*")
+os.system("rm submission_data.json")
 

@@ -1,9 +1,0 @@
-{
-    "submission_id": "id",
-    "stdio": false, 
-    "io_filename": "data",
-    "memory": 4000,
-    "stack_memory": 4000,
-    "execution_time": 100,
-    "compiler_type": "c++64"
-}
