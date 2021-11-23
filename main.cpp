@@ -13,6 +13,6 @@ int main()
 {   
     fin >> a >> b;
     
-    fout << a + b + cnt << "\n";
+    fout << a + b << "\n";
     return 0;
 }

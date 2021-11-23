@@ -1,6 +1,7 @@
 import os
 from compile import *
 from run_sandbox import *
+from run_checker import *
 from auxiliary_functions import *
 
 code_file_names = {
@@ -24,6 +25,7 @@ io_filename = submission_data["io_filename"]
 memory = submission_data["memory"]
 stack_memory = submission_data["stack_memory"]
 execution_time = submission_data["execution_time"]
+checker = submission_data["checker"]
 
 compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"], submission_data["execution_time"], submission_data["memory"], submission_data["stack_memory"])
 
@@ -31,7 +33,6 @@ compilation_result = compile(code_file_name, executable_file_name, submission_da
 
 eval_json = {
     "compilation": {
-
     }
 }
 
@@ -40,6 +41,7 @@ eval_json["compilation"]["warnings"] = copy.deepcopy(compilation_result["warning
 if compilation_result["result"] == "fail":
     eval_json["compilation"]["error"] = "Eroare de compilare!"
 else:
+
     eval_json["compilation"]["error"] = "success"
     test_lines = read_file("tests/tests.txt").split("\n")
 
@@ -52,6 +54,7 @@ else:
         ok_file_tests = tag + "-" + io_filename + ".ok"
         in_file = io_filename + ".in"
         out_file = io_filename + ".out"
+        ok_file = io_filename + ".ok"
         
         os.system("rm -rf " + EXECUTION_JAIL +"/*")
         os.system("cp tests/" + in_file_tests + " " + EXECUTION_JAIL + "/" + in_file)
@@ -59,12 +62,20 @@ else:
         os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
 
         run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file)
-
+        # !!! BUG NEREZOLVAT DACA CHECKER_JAIL != EXECUTION_JAIL 
         test_summary = copy.deepcopy(run_info)
         del test_summary["result"]
         if isinstance(run_info["result"], dict) and "Success" in run_info["result"].keys():
-            
-            
+            os.system("cp tests/" + in_file_tests + " " + CHECKER_JAIL + "/" + in_file)
+            os.system("cp tests/" + ok_file_tests + " " + CHECKER_JAIL + "/" + ok_file)
+            os.system("rm "+ CHECKER_JAIL + "/" + executable_file_name)
+            #os.system("cp checker " + CHECKER_JAIL + "/checker")
+            # !!! DE IMPLEMENTAT USER CHECKER
+            checker_res = run_checker(in_file, out_file, ok_file, execution_time, checker)
+            test_summary["verdict"] = {
+                "points_awarded" : checker_res["p"] / 100 * points,
+                "reason" : checker_res["reason"]
+            }
             pass
         else:
             test_summary["verdict"] = {
@@ -83,4 +94,6 @@ with open("../evaluation_summary.json", "w") as f:
 os.system("rm " + code_file_name)
 if compilation_result["result"] == "success":
     os.system("rm " + executable_file_name)
+if checker:
+    os.system("rm checker")
 
