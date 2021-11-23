@@ -7,10 +7,12 @@ ofstream fout("data.out");
 
 
 int a, b;
+int cnt;
 
 int main() 
 {   
     fin >> a >> b;
-    fout << a + b << "\n";
+    
+    fout << a + b + cnt << "\n";
     return 0;
 }

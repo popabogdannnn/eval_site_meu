@@ -1,11 +1,10 @@
 import os
 from auxiliary_functions import *
 
-def run_snadbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file):
+def run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file):
    
     os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default/isolated")
     os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default")
-
 
     sandbox_command = "ia-sandbox -r " + PWD + "/" + EXECUTION_JAIL
 
@@ -18,13 +17,28 @@ def run_snadbox(executable_file_name, stdio, memory, stack_memory, execution_tim
     sandbox_command += " --time " + str(execution_time) + "ms"
     sandbox_command += " --wall-time " + str(execution_time + 2000) + "ms"
     sandbox_command += " --stderr execution_stderr"
-    sandbox_command += " -o oneline"
+    sandbox_command += " -o json"
     sandbox_command += " ./" + executable_file_name
     sandbox_command = "(" + sandbox_command + ") > execution_data.json" 
 
-    
-
-    #print(sandbox_command)
     os.system(sandbox_command)
+
+    ret = {
+    
+    }
+
+    execution_data = read_json("execution_data.json")
+    
+    ret = copy.deepcopy(execution_data)
+    del ret["usage"]["wall_time"]
+    
+    ret["stderr"] = read_file("execution_stderr")
+
+    os.system("rm execution_stderr")
+    os.system("rm execution_data.json")
+
+    return ret
+
+
 
     

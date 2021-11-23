@@ -1,6 +1,7 @@
 
 import json
 import os
+import copy
 
 PWD = os.getcwd()
 COMPILATION_JAIL = "jail"

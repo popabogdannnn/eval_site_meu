@@ -29,28 +29,58 @@ compilation_result = compile(code_file_name, executable_file_name, submission_da
 
 #print(compilation_result)
 
-test_lines = read_file("tests/tests.txt").split("\n")
+eval_json = {
+    "compilation": {
 
-for line in test_lines:
-    line = line.split(' ')
-    tag = line[0]
-    points = int(line[1])
+    }
+}
 
-    in_file_tests = tag + "-" + io_filename + ".in"
-    ok_file_tests = tag + "-" + io_filename + ".ok"
-    in_file = io_filename + ".in"
-    out_file = io_filename + ".out"
-    
-    os.system("rm -rf " + EXECUTION_JAIL +"/*")
-    os.system("cp tests/" + in_file_tests + " " + EXECUTION_JAIL + "/" + in_file)
-    os.system("echo -n > " + EXECUTION_JAIL + "/" + out_file)
-    os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
+eval_json["compilation"]["warnings"] = copy.deepcopy(compilation_result["warnings"])
 
-    run_snadbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file)
+if compilation_result["result"] == "fail":
+    eval_json["compilation"]["error"] = "Eroare de compilare!"
+else:
+    eval_json["compilation"]["error"] = "success"
+    test_lines = read_file("tests/tests.txt").split("\n")
 
- 
+    for line in test_lines:
+        line = line.split(' ')
+        tag = line[0]
+        points = int(line[1])
 
-#os.system("rm " + code_file_name)
-#if compilation_result["result"] == "success":
-#    os.system("rm " + executable_file_name)
+        in_file_tests = tag + "-" + io_filename + ".in"
+        ok_file_tests = tag + "-" + io_filename + ".ok"
+        in_file = io_filename + ".in"
+        out_file = io_filename + ".out"
+        
+        os.system("rm -rf " + EXECUTION_JAIL +"/*")
+        os.system("cp tests/" + in_file_tests + " " + EXECUTION_JAIL + "/" + in_file)
+        os.system("echo -n > " + EXECUTION_JAIL + "/" + out_file)
+        os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
+
+        run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file)
+
+        test_summary = copy.deepcopy(run_info)
+        del test_summary["result"]
+        if isinstance(run_info["result"], dict) and "Success" in run_info["result"].keys():
+            
+            
+            pass
+        else:
+            test_summary["verdict"] = {
+                "points_awarded" : 0
+            }
+            if isinstance(run_info["result"], dict):
+                for key, value in run_info["result"].items():
+                    test_summary["verdict"]["reason"] = str(key) + " " + str(value)
+            else:
+                test_summary["verdict"]["reason"] = str(run_info["result"])
+        eval_json[tag] = test_summary   
+
+with open("../evaluation_summary.json", "w") as f:
+    json.dump(eval_json, f)
+
+os.system("rm " + code_file_name)
+if compilation_result["result"] == "success":
+    os.system("rm " + executable_file_name)
 

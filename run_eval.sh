@@ -1,4 +1,6 @@
 cp ./main.cpp eval/
+cp ./
+#g++
 
 cd eval/
 
