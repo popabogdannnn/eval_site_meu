@@ -27,7 +27,7 @@ stack_memory = submission_data["stack_memory"]
 execution_time = submission_data["execution_time"]
 checker = submission_data["checker"]
 
-compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"], submission_data["execution_time"], submission_data["memory"], submission_data["stack_memory"])
+compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"])
 
 #print(compilation_result)
 

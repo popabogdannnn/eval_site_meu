@@ -6,16 +6,32 @@ COMPILE_TIME = 10 #in seconds
 COMPILE_WALL_TIME = COMPILE_TIME + 2 #in seconds
 
 compiler_commands = {
-    "c32": "",
-    "c64": "",
-    "c++32": "",
+    "c32": "usr/bin/gcc -- -m32 -Wall -static -O2 -std=c11 main.c -o main -lm",
+    "c64": "usr/bin/gcc -- -m64 -Wall -static -O2 -std=c11 main.c -o main -lm",
+    "c++32": "usr/bin/g++ -- -m32 -Wall -static -O2 -std=c++14 main.cpp -o main -lm",
     "c++64": "usr/bin/g++ -- -m64 -Wall -static -O2 -std=c++14 main.cpp -o main -lm"
 }
 
 compiler_dependencies = {
-    "c32": [],
-    "c64": [],
-    "c++32": [],
+    "c32": ['/lib:/lib:exec',
+            '/lib32:/lib32:exec',
+                        '/lib64:/lib64:exec',
+                        '/usr/lib32:/usr/lib32:exec',
+                        '/usr/bin:/usr/bin:exec',
+                        '/usr/lib:/usr/lib:exec',
+                        '/usr/include:/usr/include'],
+    "c64": ['/lib:/lib:exec',
+            '/lib64:/lib64:exec',
+                        '/usr/bin:/usr/bin:exec',
+                        '/usr/lib:/usr/lib:exec',
+                        '/usr/include:/usr/include'],
+    "c++32": ['/lib:/lib:exec',
+                '/lib32:/lib32:exec',
+                          '/lib64:/lib64:exec',
+                          '/usr/lib32:/usr/lib32:exec',
+                          '/usr/bin:/usr/bin:exec',
+                          '/usr/lib:/usr/lib:exec',
+                          '/usr/include:/usr/include'],
     "c++64": ['/lib:/lib:exec',
               '/lib64:/lib64:exec',
                         '/usr/bin:/usr/bin:exec',
@@ -24,7 +40,7 @@ compiler_dependencies = {
 }
 
 
-def compile(code_file_name, executable_file_name,compiler_type, execution_time, memory, stack_memory):
+def compile(code_file_name, executable_file_name,compiler_type):
     compile_command = compiler_commands[compiler_type]
     compiler_depency = compiler_dependencies[compiler_type]
 

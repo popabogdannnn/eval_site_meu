@@ -1,4 +1,4 @@
-cp ./main.cpp eval/
+cp ./main.c eval/
 
 cd eval/
 

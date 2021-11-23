@@ -5,6 +5,6 @@
     "memory": 4000,
     "stack_memory": 4000,
     "execution_time": 100,
-    "compiler_type": "c++64",
+    "compiler_type": "c64",
     "checker": null
 }
