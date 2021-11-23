@@ -1,9 +1,9 @@
 {
-    "problem_id": "id",
+    "submission_id": "id",
     "stdio": false, 
     "io_filename": "data",
-    "memory": 5000,
-    "stack_memory": 5000,
+    "memory": 50000,
+    "stack_memory": 50000,
     "execution_time": 500,
     "compiler_type": "c++64"
 }

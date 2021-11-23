@@ -30,7 +30,7 @@ def compile(code_file_name, executable_file_name,compiler_type, execution_time, 
 
     #os.system("rmdir /sys/fs/cgroup/cpuacct/ia-sandbox/default")
     os.system("rm -rf compilation_jail/*")
-    os.system("cp " + code_file_name + " compilation_jail")
+    os.system("cp " + code_file_name + " compilation_jail/")
     sandbox_command = "ia-sandbox -r /media/bogdan/0C4E0E4A4E0E2CD0/work/Linux/cpp/eval_site_meu/eval/compilation_jail --forward-env"
 
     for mount in compiler_depency:
@@ -46,7 +46,7 @@ def compile(code_file_name, executable_file_name,compiler_type, execution_time, 
     sandbox_command = "(" + sandbox_command + ") > compilation_data.json"
     
     os.system(sandbox_command)
-
+    
     compilation_data = read_json("compilation_data.json")
 
     ret = {
