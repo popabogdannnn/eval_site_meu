@@ -11,6 +11,6 @@ int a, b;
 int main() 
 {   
     fin >> a >> b;
-    fout << a + b + 1 << "\n";
+    fout << a + b << "\n";
     return 0;
 }

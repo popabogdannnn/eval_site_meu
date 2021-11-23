@@ -27,7 +27,7 @@ execution_time = submission_data["execution_time"]
 
 compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"], submission_data["execution_time"], submission_data["memory"], submission_data["stack_memory"])
 
-print(compilation_result)
+#print(compilation_result)
 
 test_lines = read_file("tests/tests.txt").split("\n")
 
