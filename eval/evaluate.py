@@ -64,7 +64,9 @@ else:
         os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
 
         run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file)
+      
         # !!! BUG NEREZOLVAT DACA CHECKER_JAIL != EXECUTION_JAIL 
+      
         test_summary = copy.deepcopy(run_info)
         del test_summary["result"]
         if isinstance(run_info["result"], dict) and "Success" in run_info["result"].keys():

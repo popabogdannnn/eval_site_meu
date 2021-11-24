@@ -6,6 +6,7 @@ for FILE in submission/*; do
     mv $FILE eval/
 done
 
+
 cd eval/
 python3 ./evaluate.py
 cd ../
