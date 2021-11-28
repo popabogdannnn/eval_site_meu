@@ -63,6 +63,8 @@ def compile(code_file_name, executable_file_name,compiler_type):
     sandbox_command += " " + compile_command
     sandbox_command = "(" + sandbox_command + ") > compilation_data.json"
     
+    #print(sandbox_command)
+
     os.system(sandbox_command)
     
     compilation_data = read_json("compilation_data.json")
