@@ -1,13 +1,13 @@
 import os
 from auxiliary_functions import *
 
-def run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file):
+def run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file, instance_name):
    
-    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default/isolated")
-    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default")
+    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/" + instance_name + "/isolated")
+    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/" + instance_name)
 
     sandbox_command = "ia-sandbox -r " + PWD + "/" + EXECUTION_JAIL
-
+    sandbox_command += " --instance-name " + instance_name
     if stdio: 
         sandbox_command += " --stdin " + EXECUTION_JAIL + "/" + in_file
         sandbox_command += " --stdout " + EXECUTION_JAIL + "/" + out_file

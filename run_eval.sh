@@ -8,5 +8,5 @@ done
 
 
 cd eval/
-python3 ./evaluate.py
+python3 ./evaluate.py instance1
 cd ../

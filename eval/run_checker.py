@@ -1,8 +1,11 @@
 from auxiliary_functions import *
 
-def run_checker(in_file, out_file, ok_file, time, checker):
+def run_checker(in_file, out_file, ok_file, time, checker, instance_name):
     if checker:
+        os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/" + instance_name + "/isolated")
+        os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/" + instance_name)
         sandbox_command = "ia-sandbox -r " + PWD + "/" + CHECKER_JAIL
+        sandbox_command += " --instance-name " + instance_name
         sandbox_command += " --forward-env"
         sandbox_command += " --stdout checker_verdict"
         sandbox_command += " --memory 512mb"

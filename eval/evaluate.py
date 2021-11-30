@@ -1,8 +1,15 @@
 import os
+import sys
 from compile import *
 from run_sandbox import *
 from run_checker import *
 from auxiliary_functions import *
+
+if (len(sys.argv) != 2):
+    print("INVALID NUMBER OF ARGUMENTS")
+    exit()
+
+instance_name = sys.argv[1]
 
 code_file_names = {
     "c32" : "main.c",
@@ -28,7 +35,7 @@ stack_memory = submission_data["stack_memory"]
 execution_time = submission_data["execution_time"]
 checker = submission_data["checker"]
 
-compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"])
+compilation_result = compile(code_file_name, executable_file_name, submission_data["compiler_type"], instance_name)
 
 #print(compilation_result)
 
@@ -63,7 +70,7 @@ else:
         os.system("echo -n > " + EXECUTION_JAIL + "/" + out_file)
         os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
 
-        run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file)
+        run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file, instance_name)
       
         # !!! BUG NEREZOLVAT DACA CHECKER_JAIL != EXECUTION_JAIL 
       
@@ -75,7 +82,7 @@ else:
             os.system("rm "+ CHECKER_JAIL + "/" + executable_file_name)
             #os.system("cp checker " + CHECKER_JAIL + "/checker")
             # !!! DE IMPLEMENTAT USER CHECKER
-            checker_res = run_checker(in_file, out_file, ok_file, execution_time, checker)
+            checker_res = run_checker(in_file, out_file, ok_file, execution_time, checker, instance_name)
             test_summary["verdict"] = {
                 "points_awarded" : checker_res["p"] / 100 * points,
                 "reason" : checker_res["reason"]
@@ -92,7 +99,7 @@ else:
                 test_summary["verdict"]["reason"] = str(run_info["result"])
         eval_json[tag] = test_summary   
 
-with open("../evaluation_summary.json", "w") as f:
+with open("../" + submission_id + ".json", "w") as f:
     json.dump(eval_json, f)
 
 os.system("rm " + code_file_name)

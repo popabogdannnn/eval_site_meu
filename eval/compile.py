@@ -40,16 +40,17 @@ compiler_dependencies = {
 }
 
 
-def compile(code_file_name, executable_file_name,compiler_type):
+def compile(code_file_name, executable_file_name, compiler_type, instance_name):
     compile_command = compiler_commands[compiler_type]
     compiler_depency = compiler_dependencies[compiler_type]
 
-    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default/isolated")
-    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/default")
+    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/" + instance_name + "/isolated")
+    os.system("rmdir /sys/fs/cgroup/memory/ia-sandbox/" + instance_name)
    
     os.system("rm -rf " + COMPILATION_JAIL + "/*")
     os.system("cp " + code_file_name + " "+ COMPILATION_JAIL + "/")
     sandbox_command = "ia-sandbox -r " + PWD + "/" + COMPILATION_JAIL + "/ --forward-env"
+    sandbox_command += " --instance-name " + instance_name
 
     for mount in compiler_depency:
         sandbox_command += " --mount " + mount
