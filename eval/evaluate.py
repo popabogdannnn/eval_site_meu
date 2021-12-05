@@ -66,8 +66,12 @@ else:
     
     eval_json["compilation"]["error"] = "success"
     test_lines = read_file("tests/tests.txt").split("\n")
-
+    while(test_lines[-1] == ""):
+        test_lines.pop()
+    
     for line in test_lines:
+        if(line == ""):
+            continue
         line = line.split(' ')
         tag = line[0]
         points = int(line[1])
