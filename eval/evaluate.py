@@ -81,25 +81,35 @@ else:
         in_file = io_filename + ".in"
         out_file = io_filename + ".out"
         ok_file = io_filename + ".ok"
-        
+
         os.system("rm -rf " + EXECUTION_JAIL +"/*")
         os.system("cp tests/" + in_file_tests + " " + EXECUTION_JAIL + "/" + in_file)
         os.system("echo -n > " + EXECUTION_JAIL + "/" + out_file)
-        os.system("cp " + executable_file_name + " " + EXECUTION_JAIL +"/")
+        os.system("cp " + executable_file_name + " " + EXECUTION_JAIL + "/")
+        exception_occured = False
+        try:
+            run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file, instance_name)
+        except:
+            exception_occured = True
+        # !!! BUG NEREZOLVAT DACA CHECKER_JAIL != EXECUTION_JAIL
+        test_summary = {
 
-        run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file, instance_name)
-      
-        # !!! BUG NEREZOLVAT DACA CHECKER_JAIL != EXECUTION_JAIL 
-      
-        test_summary = copy.deepcopy(run_info)
-        del test_summary["result"]
-        if isinstance(run_info["result"], dict) and "Success" in run_info["result"].keys():
+        } 
+        if(exception_occured == False):
+            test_summary = copy.deepcopy(run_info)
+            del test_summary["result"]
+        if(exception_occured):
+            test_summary["verdict"] = {
+                "points_awarded" : 0,
+                "reason" : "Exceptie (poate nu sunt vazute toate testele descrise?)"
+            }
+        elif isinstance(run_info["result"], dict) and "Success" in run_info["result"].keys():
             os.system("cp tests/" + in_file_tests + " " + CHECKER_JAIL + "/" + in_file)
             os.system("cp tests/" + ok_file_tests + " " + CHECKER_JAIL + "/" + ok_file)
             os.system("rm "+ CHECKER_JAIL + "/" + executable_file_name)
             checker_res = run_checker(in_file, out_file, ok_file, execution_time, checker, instance_name)
             test_summary["verdict"] = {
-                "points_awarded" : checker_res["p"] / 100 * points,
+                "points_awarded" : round(checker_res["p"] / 100 * points, 2),
                 "reason" : checker_res["reason"]
             }
             pass

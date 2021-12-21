@@ -72,7 +72,7 @@ def compile(code_file_name, executable_file_name, compiler_type, instance_name):
     
     compilation_data = read_json("compilation_data.json")
 
-    print(compilation_data)
+    #print(compilation_data)
     ret = {
         "result" : "fail",
         "warnings" : read_file("compile_warnings") 
