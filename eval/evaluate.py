@@ -65,19 +65,16 @@ elif checker and checker_compilation_result["result"] == "fail":
 else:
     
     eval_json["compilation"]["error"] = "success"
-    test_lines = read_file("tests/tests.txt").split("\n")
-    while(test_lines[-1] == ""):
-        test_lines.pop()
+    #test_lines = read_file("tests/tests.txt").split("\n")
     
-    for line in test_lines:
-        if(line == ""):
-            continue
-        line = line.split(' ')
-        tag = line[0]
-        points = int(line[1])
+    test_tags = load_tests()
 
-        in_file_tests = tag + "-" + io_filename + ".in"
-        ok_file_tests = tag + "-" + io_filename + ".ok"
+    for tag in test_tags:
+
+        print(tag)
+        in_file_tests = tag + ".in"
+        ok_file_tests = tag + ".ok"
+        
         in_file = io_filename + ".in"
         out_file = io_filename + ".out"
         ok_file = io_filename + ".ok"
@@ -87,6 +84,7 @@ else:
         os.system("echo -n > " + EXECUTION_JAIL + "/" + out_file)
         os.system("cp " + executable_file_name + " " + EXECUTION_JAIL + "/")
         exception_occured = False
+        
         try:
             run_info = run_sandbox(executable_file_name, stdio, memory, stack_memory, execution_time, in_file, out_file, instance_name)
         except:
@@ -109,7 +107,7 @@ else:
             os.system("rm "+ CHECKER_JAIL + "/" + executable_file_name)
             checker_res = run_checker(in_file, out_file, ok_file, execution_time, checker, instance_name)
             test_summary["verdict"] = {
-                "points_awarded" : round(checker_res["p"] / 100 * points, 2),
+                "points_awarded" : checker_res["p"],
                 "reason" : checker_res["reason"]
             }
             pass
@@ -125,7 +123,7 @@ else:
         eval_json[tag] = test_summary   
 
 with open("../" + submission_id + ".json", "w") as f:
-    json.dump(eval_json, f)
+    json.dump(eval_json, f, indent = 4)
 
 os.system("rm " + code_file_name)
 if compilation_result["result"] == "success":
