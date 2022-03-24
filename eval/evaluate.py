@@ -69,14 +69,20 @@ else:
     
     test_tags = load_tests()
 
+    cnt = 0
     for tag in test_tags:
 
-        print(tag)
+        #print(tag)
         in_file_tests = tag + ".in"
         ok_file_tests = tag + ".ok"
         
-        in_file = io_filename + ".in"
-        out_file = io_filename + ".out"
+        if stdio:
+            random_file_name = generate_random_string(10)
+            in_file = random_file_name + ".in"
+            out_file = random_file_name + ".out"
+        else:
+            in_file = io_filename + ".in"
+            out_file = io_filename + ".out"
         ok_file = io_filename + ".ok"
 
         os.system("rm -rf " + EXECUTION_JAIL +"/*")
@@ -120,7 +126,8 @@ else:
                     test_summary["verdict"]["reason"] = str(key) + " " + str(value)
             else:
                 test_summary["verdict"]["reason"] = str(run_info["result"])
-        eval_json[tag] = test_summary   
+        eval_json[cnt] = test_summary 
+        cnt += 1  
 
 with open("../" + submission_id + ".json", "w") as f:
     json.dump(eval_json, f, indent = 4)

@@ -5,55 +5,55 @@
         "error": "success"
     },
     "checker-compilation": {},
-    "1-sumab": {
+    "0": {
         "usage": {
             "user_time": {
                 "secs": 0,
-                "nanos": 986172
-            },
-            "memory": 262144
-        },
-        "stderr": "",
-        "verdict": {
-            "points_awarded": 100,
-            "reason": "Raspuns corect!"
-        }
-    },
-    "2-sumab": {
-        "usage": {
-            "user_time": {
-                "secs": 0,
-                "nanos": 1055538
-            },
-            "memory": 262144
-        },
-        "stderr": "",
-        "verdict": {
-            "points_awarded": 100,
-            "reason": "Raspuns corect!"
-        }
-    },
-    "3-sumab": {
-        "usage": {
-            "user_time": {
-                "secs": 0,
-                "nanos": 1211815
-            },
-            "memory": 262144
-        },
-        "stderr": "",
-        "verdict": {
-            "points_awarded": 100,
-            "reason": "Raspuns corect!"
-        }
-    },
-    "4-sumab": {
-        "usage": {
-            "user_time": {
-                "secs": 0,
-                "nanos": 2989728
+                "nanos": 1288274
             },
             "memory": 131072
+        },
+        "stderr": "",
+        "verdict": {
+            "points_awarded": 100,
+            "reason": "Raspuns corect!"
+        }
+    },
+    "1": {
+        "usage": {
+            "user_time": {
+                "secs": 0,
+                "nanos": 1200213
+            },
+            "memory": 262144
+        },
+        "stderr": "",
+        "verdict": {
+            "points_awarded": 100,
+            "reason": "Raspuns corect!"
+        }
+    },
+    "2": {
+        "usage": {
+            "user_time": {
+                "secs": 0,
+                "nanos": 1140553
+            },
+            "memory": 143360
+        },
+        "stderr": "",
+        "verdict": {
+            "points_awarded": 100,
+            "reason": "Raspuns corect!"
+        }
+    },
+    "3": {
+        "usage": {
+            "user_time": {
+                "secs": 0,
+                "nanos": 1403139
+            },
+            "memory": 262144
         },
         "stderr": "",
         "verdict": {

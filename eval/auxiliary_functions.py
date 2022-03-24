@@ -2,6 +2,8 @@ import json
 import os
 import copy
 import glob
+import string    
+import random
 
 PWD = os.getcwd()
 COMPILATION_JAIL = "jail"
@@ -27,3 +29,7 @@ def load_tests():
     os.chdir("..")
     test_list.sort()
     return test_list   
+
+def generate_random_string(length):
+    result = ''.join((random.choice(string.ascii_lowercase) for x in range(length)))
+    return result
